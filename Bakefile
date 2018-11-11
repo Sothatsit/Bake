@@ -1,0 +1,58 @@
+# The command we want to use to compile our binaries
+C99 = cc -std=c99 -Wall -pedantic -Werror
+
+# Where our source files are located
+SRC = src
+
+# Where we want to put our built .o files
+BUILD = build
+
+# All the .o files built by this program
+BINARIES = $(BUILD)/buffer.o $(BUILD)/stringbuilder.o $(BUILD)/stringmap.o  \
+           $(BUILD)/files.o $(BUILD)/targets.o $(BUILD)/parser.o            \
+           $(BUILD)/execution.o $(BUILD)/main.o
+
+# All the .h and .c files used as sources by this program
+SOURCES = $(SRC)/buffer.h $(SRC)/buffer.c  $(SRC)/stringbuilder.h $(SRC)/stringbuilder.c  \
+          $(SRC)/stringmap.h  $(SRC)/stringmap.c  $(SRC)/files.h  $(SRC)/files.c          \
+          $(SRC)/targets.h  $(SRC)/targets.c  $(SRC)/parser.h  $(SRC)/parser.c            \
+          $(SRC)/execution.h  $(SRC)/execution.c  $(SRC)/main.h  $(SRC)/main.c
+
+#
+# Set up the directory structure and build the bake executable
+#
+build: setupDirectory bake
+	@echo ""
+	@echo "==============================="
+	@echo "    BAKE BUILT SUCCESSFULLY    "
+	@echo "==============================="
+
+
+#
+# Compile all sources of bake, and link the resulting executable
+#
+bake: $(BINARIES) $(SOURCES)
+	$(C99)  -o $(BUILD)/buffer.o          -c $(SRC)/buffer.c
+	$(C99)  -o $(BUILD)/stringbuilder.o   -c $(SRC)/stringbuilder.c
+	$(C99)  -o $(BUILD)/stringmap.o       -c $(SRC)/stringmap.c
+	$(C99)  -o $(BUILD)/files.o           -c $(SRC)/files.c
+	$(C99)  -o $(BUILD)/targets.o         -c $(SRC)/targets.c
+	$(C99)  -o $(BUILD)/parser.o          -c $(SRC)/parser.c
+	$(C99)  -o $(BUILD)/execution.o       -c $(SRC)/execution.c
+	$(C99)  -o $(BUILD)/main.o            -c $(SRC)/main.c
+
+	$(C99)  -o bake  $(BINARIES)
+
+
+#
+# Remove the built files so the whole program can be rebuilt
+#
+clean:
+	rm -rf $(BUILD)
+
+
+#
+# Set up the directory structure for the built files
+#
+setupDirectory:
+	mkdir -p build
